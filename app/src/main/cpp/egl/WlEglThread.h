@@ -1,0 +1,16 @@
+//
+// Created by asus on 2022/12/20.
+//
+
+#ifndef OPENGLNATIVEDEMO_WLEGLTHREAD_H
+#define OPENGLNATIVEDEMO_WLEGLTHREAD_H
+
+
+
+class WlEglThread {
+
+};
+
+
+
+#endif //OPENGLNATIVEDEMO_WLEGLTHREAD_H
