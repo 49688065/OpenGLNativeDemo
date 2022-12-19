@@ -16,7 +16,7 @@ WIEglHelper::~WIEglHelper() {
 
 }
 
-int WIEglHelper::initEgl(EGLNativeWindowType win) {
+int WIEglHelper::initEgl(EGLNativeWindowType window) {
 
     mEglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
     if (mEglDisplay == EGL_NO_DISPLAY){
@@ -45,6 +45,42 @@ int WIEglHelper::initEgl(EGLNativeWindowType win) {
     };
 
     EGLint num_config;
-    if (!eglChooseConfig(mEglDisplay,attribs,NULL,1,&num_config))
+    if (!eglChooseConfig(mEglDisplay,attribs,NULL,1,&num_config)){
+        LOGE("EglChooseConfig error 1")
+        return -1;
+    }
+
+    //4
+    if (!eglChooseConfig(mEglDisplay,attribs,&mEglConfig,num_config,&num_config)){
+        LOGE("eglChooseConfig error2")
+        return -1;
+    }
+
+    //5
+    int attrib_list[] = {
+            EGL_CONTEXT_CLIENT_VERSION,2,
+            EGL_NONE
+    };
+
+    mEglContext = eglCreateContext(mEglDisplay,mEglConfig,EGL_NO_CONTEXT,attrib_list);
+    if (mEglContext ==EGL_NO_CONTEXT){
+        LOGE("eglCreateContext error")
+        return -1;
+    }
+
+    //6
+    mEglSurface = eglCreateWindowSurface(mEglDisplay,mEglConfig,window,NULL);
+    if (mEglSurface == EGL_NO_SURFACE){
+        LOGE("eglCreateWindowSurface error")
+        return  -1;
+    }
+
+    //7
+    if (!eglMakeCurrent(mEglDisplay,mEglSurface,mEglSurface,mEglContext)){
+        LOGE("eglMakeCurrent error")
+        return -1;
+    }
+
+    LOGD( "egl init success! ")
     return 0;
 }
