@@ -3,20 +3,20 @@
 //
 
 #include "android/log.h"
-#include "WIEglHelper.h"
+#include "WlEglHelper.h"
 
-WIEglHelper::WIEglHelper() {
+WlEglHelper::WlEglHelper() {
     mEglDisplay = EGL_NO_DISPLAY;
     mEglSurface = EGL_NO_SURFACE;
     mEglContext = EGL_NO_CONTEXT;
     mEglConfig = NULL;
 }
 
-WIEglHelper::~WIEglHelper() {
+WlEglHelper::~WlEglHelper() {
 
 }
 
-int WIEglHelper::initEgl(EGLNativeWindowType window) {
+int WlEglHelper::initEgl(EGLNativeWindowType window) {
 
     mEglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
     if (mEglDisplay == EGL_NO_DISPLAY){
@@ -83,4 +83,33 @@ int WIEglHelper::initEgl(EGLNativeWindowType window) {
 
     LOGD( "egl init success! ")
     return 0;
+}
+
+int WlEglHelper::swapBuffers() {
+    if (mEglDisplay != EGL_NO_DISPLAY && mEglSurface !=EGL_NO_SURFACE){
+        if (eglSwapBuffers(mEglDisplay,mEglSurface)){
+            return  0;
+        }
+    }
+    return -1;
+}
+
+void WlEglHelper::destoryEgl() {
+    if (mEglDisplay != EGL_NO_DISPLAY){
+        eglMakeCurrent(mEglDisplay,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);
+    }
+
+    if (mEglDisplay !=EGL_NO_DISPLAY && mEglSurface !=EGL_NO_SURFACE){
+        eglDestroySurface(mEglDisplay,mEglSurface);
+        mEglSurface = EGL_NO_SURFACE;
+    }
+
+    if (mEglDisplay != EGL_NO_DISPLAY &&mEglContext!=EGL_NO_CONTEXT){
+        eglDestroyContext(mEglDisplay,mEglContext);
+        mEglContext = EGL_NO_CONTEXT;
+    }
+
+    if (mEglDisplay != EGL_NO_DISPLAY){
+        mEglDisplay = EGL_NO_DISPLAY;
+    }
 }
