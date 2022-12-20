@@ -31,7 +31,7 @@ GLint vPosition;
 
 float vertexs [] ={
         1,-1,
-        1,-1,
+        1,1,
         -1,-1,
         -1,1
 };
