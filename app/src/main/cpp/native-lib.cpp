@@ -11,14 +11,13 @@
 
 ANativeWindow *nativeWindow = NULL;
 WlEglThread *wlEglThread = NULL;
-
 const char *vertex = "attribute vec4 v_Position;\n"
                      "attribute vec2 f_Position;\n"
                      "varying vec2 ft_Position;\n"
                      "uniform mat4 u_Matrix;\n"
                      "void main() {\n"
                      "    ft_Position = f_Position;\n"
-                     "    gl_Position = v_Position*uMatrix;\n"
+                     "    gl_Position = v_Position*u_Matrix;\n"
                      "}";
 
 const char *fragment =  "precision mediump float;\n"
@@ -71,7 +70,7 @@ void callback_SurfaceCrete(void *ctx){
     }
     LOGD("==========================")
     initMatrix(matrix);
-
+    rotateMatrix(-90,matrix);
     for (int i = 0; i < 16; ++i) {
         LOGD("%f",matrix[i])
     }
