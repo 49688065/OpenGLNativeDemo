@@ -1,0 +1,16 @@
+//
+// Created by asus on 2023/1/6.
+//
+
+#ifndef OPENGLNATIVEDEMO_WLBASEOPENGL_H
+#define OPENGLNATIVEDEMO_WLBASEOPENGL_H
+
+
+
+class WlBaseOpengl {
+
+};
+
+
+
+#endif //OPENGLNATIVEDEMO_WLBASEOPENGL_H

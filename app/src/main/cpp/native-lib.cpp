@@ -54,6 +54,7 @@ float fragments[]={
 
 float matrix[16];
 
+
 void callback_SurfaceCrete(void *ctx){
     LOGD("callback_SurfaceCreate")
     WlEglThread *wlEglThread = static_cast<WlEglThread*>(ctx);
@@ -70,7 +71,12 @@ void callback_SurfaceCrete(void *ctx){
     }
     LOGD("==========================")
     initMatrix(matrix);
-    rotateMatrix(-90,matrix);
+//    rotateMatrix(-90,matrix);
+//    scaleMatrix(0.5,matrix);
+//    transMatrix(-1,-0.5,matrix);
+
+    //把-3到1之间的屏幕放到-1到1的范围内
+//    orthoM(-3,1,-1,1,matrix);
     for (int i = 0; i < 16; ++i) {
         LOGD("%f",matrix[i])
     }
@@ -94,6 +100,19 @@ void callback_SurfacChange(int width ,int height,void *ctx){
     LOGD("CALLBACK_surfaceCHANGE")
     WlEglThread * wlEglThread = static_cast<WlEglThread *>(ctx);
     glViewport(0,0,width,height);
+
+    //正交投影
+    float screen_r=1.0*width/height;//屏幕宽高比
+    float picture_r = 1.0 *w/h; //图片宽高比
+
+    if (screen_r>picture_r){//图片宽度缩放
+        float r = width /(1.0 * height/h *w);
+        orthoM(-r,r,-1,1,matrix);
+    } else{//图片高度缩放
+        float r = height/(1.0 * width/w * h);
+        orthoM(-1,1,-r,r,matrix);
+    }
+
 }
 
 
