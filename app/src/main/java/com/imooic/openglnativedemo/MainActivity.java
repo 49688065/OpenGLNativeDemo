@@ -26,14 +26,19 @@ private ActivityMainBinding binding;
      binding = ActivityMainBinding.inflate(getLayoutInflater());
      setContentView(binding.getRoot());
         binding.wlsurfaceview.setNativeOpengl(nativeOpengl = new NativeOpengl());
+        binding.wlsurfaceview.setOnSurfaceListener(new WlSurfaceView.OnSurfaceListener() {
+            @Override
+            public void init() {
+                final Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.mingren);
+                ByteBuffer fcbuffer = ByteBuffer.allocate(bitmap.getHeight()*bitmap.getWidth()*4);
+                bitmap.copyPixelsToBuffer(fcbuffer);
+                fcbuffer.flip();
+                byte[] pixels = fcbuffer.array();
+                nativeOpengl.imgData(bitmap.getWidth(),bitmap.getHeight(),pixels.length,pixels);
 
-        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.mingren);
-        ByteBuffer fcbuffer = ByteBuffer.allocate(bitmap.getHeight()*bitmap.getWidth()*4);
-        bitmap.copyPixelsToBuffer(fcbuffer);
-        fcbuffer.flip();
-        byte[] pixels = fcbuffer.array();
-        nativeOpengl.imgData(bitmap.getWidth(),bitmap.getHeight(),pixels.length,pixels);
-    }
+            }
+        });
+      }
 
 
 }

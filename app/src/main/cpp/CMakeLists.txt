@@ -26,6 +26,9 @@ add_library( # Sets the name of the library.
         egl/WlEglThread.cpp
             log/WIAndroid.cpp
             shaderutil/WlShaderUtil.cpp
+            opengl/WlBaseOpengl.cpp
+            opengl/WlFilterOne.cpp
+            opengl/WlOpengl.cpp
         )
 
 # Searches for a specified prebuilt library and stores the path as a

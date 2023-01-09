@@ -4,7 +4,7 @@
 
 #ifndef OPENGLNATIVEDEMO_MATRIXUTIL_H
 #define OPENGLNATIVEDEMO_MATRIXUTIL_H
-
+#include "math.h"
 
 static void initMatrix(float *matrix){
     for (int i = 0; i < 16; ++i) {
