@@ -150,3 +150,11 @@ Java_com_imooic_opengl_NativeOpengl_surfaceDestroy(JNIEnv *env, jobject thiz) {
         wlOpengl =NULL;
     }
 }
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_imooic_opengl_NativeOpengl_surfaceChangeFilter(JNIEnv *env, jobject thiz) {
+    if (wlOpengl != NULL)
+    {
+        wlOpengl->onChangeFilter();
+    }
+}

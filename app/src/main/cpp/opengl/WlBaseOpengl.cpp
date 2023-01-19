@@ -51,3 +51,7 @@ void WlBaseOpengl::destroy() {
 void WlBaseOpengl::setPilex(void *data, int width,int height, int length) {
 
 }
+
+void WlBaseOpengl::destorySorce() {
+
+}

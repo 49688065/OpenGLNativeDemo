@@ -22,6 +22,9 @@ public:
     float * fragments;
 
     GLuint program;
+    GLuint vShader;
+    GLuint fShader;
+
 
 public:
     WlBaseOpengl();
@@ -34,6 +37,8 @@ public:
     virtual void draw();
 
     virtual void destroy();
+
+    virtual void destorySorce();
 
     virtual void setPilex(void * data,int width,int height,int length);
 };

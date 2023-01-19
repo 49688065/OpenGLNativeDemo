@@ -1,16 +1,15 @@
 //
-// Created by asus on 2023/1/6.
+// Created by asus on 2023/1/12.
 //
 
-#ifndef OPENGLNATIVEDEMO_WLFILTERONE_H
-#define OPENGLNATIVEDEMO_WLFILTERONE_H
+#ifndef OPENGLNATIVEDEMO_WLFILTERTWO_H
+#define OPENGLNATIVEDEMO_WLFILTERTWO_H
 
 #include "WlBaseOpengl.h"
 #include "../matrix/MatrixUtil.h"
 #include "../shaderutil/WlShaderUtil.h"
 
-
-class WlFilterOne : public WlBaseOpengl{
+class WlFilterTwo: public WlBaseOpengl {
 
 public:
     GLint vPosition;
@@ -26,12 +25,12 @@ public:
     float matrix[16];
 
 public:
-    WlFilterOne();
-    ~WlFilterOne();
+    WlFilterTwo();
+    ~WlFilterTwo();
 
     void onCreate();
 
-    void onChange(int w,int h);
+    void onChange(int width, int height);
 
     void draw();
 
@@ -39,11 +38,12 @@ public:
 
     void destorySorce();
 
-    void setMatrix(int width,int height);
+    void setMatrix(int width, int height);
 
-    void setPilex(void *data,int width,int height,int length);
+    void setPilex(void *data, int width, int height, int length);
+
 };
 
 
 
-#endif //OPENGLNATIVEDEMO_WLFILTERONE_H
+#endif //OPENGLNATIVEDEMO_WLFILTERTWO_H

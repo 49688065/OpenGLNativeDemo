@@ -29,6 +29,7 @@ add_library( # Sets the name of the library.
             opengl/WlBaseOpengl.cpp
             opengl/WlFilterOne.cpp
             opengl/WlOpengl.cpp
+            opengl/WlFilterTwo.cpp
         )
 
 # Searches for a specified prebuilt library and stores the path as a

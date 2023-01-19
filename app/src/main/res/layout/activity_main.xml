@@ -11,7 +11,23 @@
 
         android:id="@+id/wlsurfaceview"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         tools:ignore="MissingConstraints" />
 
+    <Button
+        android:id = "@+id/change_filter"
+        android:onClick = "changeFilter"
+        android:layout_height="50dp"
+        android:layout_width = "match_parent"
+        android:text="切换滤镜"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:onClick="changeTexture"
+        android:layout_width ="match_parent"
+        android:layout_height ="50dp"
+        app:layout_constraintBottom_toTopOf="@id/change_filter"
+        app:layout_constraintStart_toStartOf="parent"
+        />
   </android.support.constraint.ConstraintLayout>

@@ -29,8 +29,8 @@ void WlFilterOne::onCreate() {
                 "    gl_FragColor=texture2D(sTexture, ft_Position);\n"
                 "}";
 
-    program = createProgrm(vertex,fragment);
-    LOGD("opengl program is %d", program);
+    program = createProgrm(vertex,fragment,&vShader,&fShader);
+    LOGD("opengl program is %d %d %d", program,vShader,fShader);
     vPosition = glGetAttribLocation(program,"v_Position");//顶点坐标
     fPosition = glGetAttribLocation(program,"f_Position");//纹理坐标
     sampler = glGetUniformLocation(program,"sTexture");//2D纹理
@@ -102,5 +102,23 @@ void WlFilterOne::setPilex(void *data, int width, int height, int length) {
 
     if (surface_height >0 && surface_width >0){
         setMatrix(surface_width,surface_height);
+    }
+}
+
+void WlFilterOne::destroy() {
+    LOGE("WlFilterOne::destroy()");
+
+    glDeleteTextures(1,&textureId);
+    glDetachShader(program,vShader);
+    glDetachShader(program,fShader);
+    glDeleteShader(vShader);
+    glDeleteShader(fShader);
+    glDeleteProgram(program);
+}
+
+void WlFilterOne::destorySorce() {
+    if (pixels != NULL)
+    {
+        pixels = NULL;
     }
 }

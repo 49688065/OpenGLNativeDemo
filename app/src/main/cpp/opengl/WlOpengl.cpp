@@ -29,7 +29,38 @@ void callback_SurfaceChange(int width,int height,void *ctx)
         }
     }
 }
+void callback_SurfaceChangeFilter(int width,int height,void *ctx)
+{
+    WlOpengl *wlOpengl = static_cast<WlOpengl *>(ctx);
+    if (wlOpengl != NULL)
+    {
+        if (wlOpengl->baseOpengl !=NULL){
+            wlOpengl->baseOpengl->destroy();
+            wlOpengl->baseOpengl->destorySorce();
+            delete wlOpengl->baseOpengl;
+            wlOpengl->baseOpengl = NULL;
+        }
+        LOGE("3.width %d height %d wlOpengl->pic_width : %d wlOpengl->pic_height: %d",width,height,wlOpengl->pic_width,wlOpengl->pic_height)
 
+        wlOpengl ->baseOpengl = new WlFilterTwo();
+        wlOpengl->baseOpengl->onCreate();
+        wlOpengl->baseOpengl->onChange(width,height);
+        wlOpengl->baseOpengl->setPilex(wlOpengl->pixel,wlOpengl->pic_width,wlOpengl->pic_height,0);
+        wlOpengl->wlEglThread->notifyRender();
+     }
+}
+
+void callback_SurfaceDestory(void *ctx)
+{
+    WlOpengl *wlOpengl = static_cast<WlOpengl *>(ctx);
+    if (wlOpengl != NULL)
+    {
+        if (wlOpengl->baseOpengl != NULL)
+        {
+            wlOpengl->baseOpengl->destroy();
+        }
+    }
+}
 void callback_SurfaceDraw(void *ctx)
 {
     WlOpengl *wlOpengl = static_cast<WlOpengl *>(ctx);
@@ -57,6 +88,8 @@ void WlOpengl::onCreateSurface(JNIEnv *env, jobject surface) {
     wlEglThread ->callBackOnCreate(callback_SurfaceCreate,this);
     wlEglThread ->callBackOnChange(callback_SurfaceChange,this);
     wlEglThread ->callBackOnDraw(callback_SurfaceDraw,this);
+    wlEglThread ->callBackOnFilterChange(callback_SurfaceChangeFilter,this);
+    wlEglThread ->callBackOnDestroy(callback_SurfaceDestory,this);
 
     baseOpengl = new WlFilterOne();
 
@@ -81,7 +114,7 @@ void WlOpengl::onDestroySurface() {
         wlEglThread ->destroy();
     }
     if (baseOpengl != NULL){
-        baseOpengl ->destroy();
+        baseOpengl ->destorySorce();
         delete baseOpengl;
         baseOpengl = NULL;
     }
@@ -93,11 +126,23 @@ void WlOpengl::onDestroySurface() {
 
     }
 
+    if (pixel != NULL)
+    {
+        free(pixel);
+        pixel =NULL;
+    }
+
 }
 
 void WlOpengl::setPixel(void *data, int width, int height, int length) {
     pic_width = width;
     pic_height = height;
+
+    if (pixel != NULL)
+    {
+        free(pixel);
+        pixel=NULL;
+    }
     pixel = malloc(length);
     memcpy(pixel,data,length);
     if (baseOpengl !=  NULL){
@@ -108,3 +153,13 @@ void WlOpengl::setPixel(void *data, int width, int height, int length) {
         wlEglThread ->notifyRender();
     }
 }
+
+void WlOpengl::onChangeFilter() {
+    if (wlEglThread != NULL)
+    {
+        wlEglThread->onSurfaceChangeFilter();
+    }
+
+}
+
+

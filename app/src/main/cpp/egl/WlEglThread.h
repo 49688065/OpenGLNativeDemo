@@ -23,6 +23,7 @@ public:
     bool isChange = false;
     bool isExit = false;
     bool isStart = false;
+    bool isChangeFilter = false;
 
     int surfaceWidth =0;
     int surfaceHeight =0;
@@ -39,6 +40,14 @@ public:
     OnDraw onDraw;
     void *onDrawCtx;
 
+    typedef void(*OnFilterChange)(int width,int height,void *);
+    OnFilterChange onFilterChange;
+    void *onFilterChangeCtx;
+
+    typedef void (*OnDestroy)(void *);
+    OnDestroy onDestroy;
+    void *onDestroyCtx;
+
     int renderType = OPENGL_RENDER_AUTO;
 
     pthread_mutex_t pthread_mutex;
@@ -52,17 +61,24 @@ public:
 
     void onSurfaceChange(int width,int height);
 
+    void onSurfaceChangeFilter();
+
     void callBackOnCreate(Oncreate onCreate,void *ctx);
 
     void callBackOnChange(OnChange onChange,void *ctx);
 
     void callBackOnDraw(OnDraw onDraw,void *ctx);
 
+    void callBackOnFilterChange(OnFilterChange onFilterChange, void *ctx);
+
+    void callBackOnDestroy(OnDestroy onDestroy,void *ctx);
+
     void setRenderType(int renderType);
 
     void notifyRender();
 
     void destroy();
+
 
 };
 

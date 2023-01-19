@@ -39,8 +39,13 @@ void * eglThreadImpl(void *context){
                 wlEglThread ->isStart = true;
             }
 
-            LOGD("DRAW")
+            if (wlEglThread->isChangeFilter){
+                wlEglThread->isChangeFilter = false;
+                wlEglThread->onFilterChange(wlEglThread->surfaceWidth,wlEglThread->surfaceHeight,wlEglThread->onFilterChangeCtx);
+            }
+
             if (wlEglThread->isStart){
+                LOGD("DRAW")
                 LOGD("isStart")
                 wlEglThread->onDraw(wlEglThread->onDrawCtx);
                 wlEglHelper ->swapBuffers();
@@ -54,6 +59,11 @@ void * eglThreadImpl(void *context){
             }
 
             if (wlEglThread->isExit){
+                wlEglThread->onDestroy(wlEglThread->onDestroyCtx);
+
+                wlEglHelper->destoryEgl();
+                delete wlEglHelper;
+                wlEglHelper = NULL;
                 break;
             }
 
@@ -108,7 +118,25 @@ void WlEglThread::notifyRender() {
 void WlEglThread::destroy(){
     isExit = true;
     notifyRender();
-    pthread_join(eglThread,NULL);
+    pthread_join(eglThread,NULL);//线程等待,等执行完egl线程的isExit里的销毁才执行下一行代码(即WlOpengl.cpp 的 baseOpengl ->destorySorce();)
     nativeWindow = NULL;
     eglThread = -1;
 }
+
+void WlEglThread::callBackOnFilterChange(WlEglThread::OnFilterChange onFilterChange, void *ctx) {
+    this->onFilterChange = onFilterChange;
+    this->onFilterChangeCtx = ctx;
+}
+
+void WlEglThread::onSurfaceChangeFilter()
+{
+    this->isChangeFilter = true;
+    notifyRender();
+}
+
+void WlEglThread::callBackOnDestroy(WlEglThread::OnDestroy onDestroy, void *ctx) {
+    this->onDestroy = onDestroy;
+    this->onDestroyCtx = ctx;
+
+}
+
