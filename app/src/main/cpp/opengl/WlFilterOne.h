@@ -37,7 +37,7 @@ public:
 
     void destroy();
 
-    void destorySorce();
+    void destroySource();
 
     void setMatrix(int width,int height);
 

@@ -116,7 +116,7 @@ void WlFilterOne::destroy() {
     glDeleteProgram(program);
 }
 
-void WlFilterOne::destorySorce() {
+void WlFilterOne::destroySource() {
     if (pixels != NULL)
     {
         pixels = NULL;

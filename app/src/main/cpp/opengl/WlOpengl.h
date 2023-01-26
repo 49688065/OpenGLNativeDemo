@@ -11,6 +11,7 @@
 #include "WlBaseOpengl.h"
 #include "WlFilterOne.h"
 #include "WlFilterTwo.h"
+#include "WlFilterYUV.h"
 
 class WlOpengl {
 
@@ -36,6 +37,8 @@ public:
     void setPixel(void *data,int width, int height,int length);
 
     void onChangeFilter();
+
+    void setYuvData(void *y, void *u, void *v, int w, int h);
 };
 
 

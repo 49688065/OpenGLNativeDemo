@@ -118,7 +118,7 @@ void WlEglThread::notifyRender() {
 void WlEglThread::destroy(){
     isExit = true;
     notifyRender();
-    pthread_join(eglThread,NULL);//线程等待,等执行完egl线程的isExit里的销毁才执行下一行代码(即WlOpengl.cpp 的 baseOpengl ->destorySorce();)
+    pthread_join(eglThread,NULL);//线程等待,等执行完egl线程的isExit里的销毁才执行下一行代码(即WlOpengl.cpp 的 baseOpengl ->destroySource();)
     nativeWindow = NULL;
     eglThread = -1;
 }

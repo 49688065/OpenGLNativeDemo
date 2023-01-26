@@ -36,7 +36,7 @@ void callback_SurfaceChangeFilter(int width,int height,void *ctx)
     {
         if (wlOpengl->baseOpengl !=NULL){
             wlOpengl->baseOpengl->destroy();
-            wlOpengl->baseOpengl->destorySorce();
+            wlOpengl->baseOpengl->destroySource();
             delete wlOpengl->baseOpengl;
             wlOpengl->baseOpengl = NULL;
         }
@@ -91,13 +91,14 @@ void WlOpengl::onCreateSurface(JNIEnv *env, jobject surface) {
     wlEglThread ->callBackOnFilterChange(callback_SurfaceChangeFilter,this);
     wlEglThread ->callBackOnDestroy(callback_SurfaceDestory,this);
 
-    baseOpengl = new WlFilterOne();
+    baseOpengl = new WlFilterYUV();
 
     wlEglThread ->onSurfaceCreate(nativeWindow);
 }
 
 void WlOpengl::onChangeSurface(int width, int height) {
     if (wlEglThread != NULL) {
+        LOGE("2 、width %d height %d", width, height);
         if (baseOpengl != NULL)
         {
             baseOpengl ->surface_width = width;
@@ -114,7 +115,7 @@ void WlOpengl::onDestroySurface() {
         wlEglThread ->destroy();
     }
     if (baseOpengl != NULL){
-        baseOpengl ->destorySorce();
+        baseOpengl->destroySource();
         delete baseOpengl;
         baseOpengl = NULL;
     }
@@ -158,6 +159,17 @@ void WlOpengl::onChangeFilter() {
     if (wlEglThread != NULL)
     {
         wlEglThread->onSurfaceChangeFilter();
+    }
+
+}
+
+void WlOpengl::setYuvData(void *y, void *u, void *v, int w, int h) {
+    if (baseOpengl != NULL){
+        baseOpengl->setYuvData(y,u,v,w,h);
+    }
+
+    if (wlEglThread !=NULL){
+        wlEglThread->notifyRender();
     }
 
 }
